@@ -45,12 +45,16 @@ defmodule TowerTelegram.Reporter do
   defp from({module, function, parameters, _}),
     do: {format_module(module), format_function(function, parameters)}
 
+  defp from([]), do: {"", ""}
+
   defp format_module(module), do: Atom.to_string(module)
 
   defp format_function(function, 0), do: Atom.to_string(function) <> "/0"
 
   defp format_function(function, parameters) when is_list(parameters),
     do: Atom.to_string(function) <> "/" <> Integer.to_string(Enum.count(parameters))
+
+  defp format_function(_, _), do: "unknown"
 
   defp include_hashtags(kind), do: "#tower\\_report #tower\\_type\\_#{kind}"
 
